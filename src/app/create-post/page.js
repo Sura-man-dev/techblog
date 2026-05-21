@@ -16,8 +16,8 @@ export default async function CreatePostPage() {
 
   return (
     <section className="mx-auto max-w-3xl">
-      <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">Create Post</h1>
-      <p className="mt-2 text-slate-600 dark:text-slate-300">
+      <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-white">Create Post</h1>
+      <p className="mt-2 text-black/50 dark:text-white/50">
         Publish a clean, professional article for the TechTalk community.
       </p>
       <CreatePostForm />

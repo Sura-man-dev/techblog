@@ -11,12 +11,16 @@ export default function BlogPage() {
   useEffect(() => {
     async function loadPosts() {
       setLoading(true);
-      const res = await fetch("/api/posts");
-      const data = await res.json();
-      setPosts(data);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/posts");
+        const data = await res.json();
+        setPosts(Array.isArray(data) ? data : []);
+      } catch {
+        setPosts([]);
+      } finally {
+        setLoading(false);
+      }
     }
-
     loadPosts();
   }, []);
 
@@ -31,38 +35,66 @@ export default function BlogPage() {
       : posts.filter((p) => p.category === activeCategory);
 
   return (
-    <div className="min-h-screen flex bg-[#0b0f19] text-white">
+    <div className="flex min-h-screen gap-0">
 
       {/* LEFT SIDEBAR */}
-      <div className="w-64 border-r border-slate-800 p-4">
-        <h2 className="text-lg font-bold mb-4">Categories</h2>
-
-        <div className="space-y-2">
+      <aside className="hidden md:block w-56 shrink-0 border-r border-black/10 dark:border-white/10 pr-6">
+        <h2 className="text-base font-bold mb-4 text-black dark:text-white">Categories</h2>
+        <div className="space-y-1">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`w-full text-left px-3 py-2 rounded ${
+              className={`w-full text-left px-3 py-2 rounded-xl text-sm font-medium transition ${
                 activeCategory === cat
-                  ? "bg-purple-600"
-                  : "hover:bg-slate-800"
+                  ? "bg-black dark:bg-white text-white dark:text-black"
+                  : "text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white"
               }`}
             >
               {cat}
             </button>
           ))}
         </div>
-      </div>
+      </aside>
 
       {/* MAIN CONTENT */}
-      <div className="flex-1 p-6">
-
+      <div className="flex-1 md:pl-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">Latest Blog Posts</h1>
+          <h1 className="text-2xl font-bold text-black dark:text-white">
+            {activeCategory === "All" ? "All Posts" : activeCategory}
+          </h1>
+          <span className="text-sm text-black/40 dark:text-white/40">
+            {filteredPosts.length} post{filteredPosts.length !== 1 ? "s" : ""}
+          </span>
+        </div>
+
+        {/* MOBILE CATEGORY PILLS */}
+        <div className="flex md:hidden flex-wrap gap-2 mb-6">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-3 py-1 rounded-full text-xs font-semibold border transition ${
+                activeCategory === cat
+                  ? "bg-black dark:bg-white text-white dark:text-black border-black dark:border-white"
+                  : "border-black/20 dark:border-white/20 text-black/60 dark:text-white/60"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
 
         {loading ? (
-          <p className="text-slate-400">Loading posts...</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="h-72 rounded-2xl bg-black/5 dark:bg-white/5 animate-pulse" />
+            ))}
+          </div>
+        ) : filteredPosts.length === 0 ? (
+          <div className="text-center py-20 text-black/40 dark:text-white/40">
+            <p className="text-lg">No posts found.</p>
+          </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredPosts.map((post) => (
@@ -70,7 +102,6 @@ export default function BlogPage() {
             ))}
           </div>
         )}
-
       </div>
     </div>
   );

@@ -26,35 +26,33 @@ export default function AdminLayout({ children }) {
   ];
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
+    <div className="min-h-screen flex bg-white dark:bg-black">
 
       {/* Sidebar */}
-      <aside className="w-64 bg-white shadow-lg p-5">
-
-        <div className="space-y-2">
-          {menu.map((item, i) => (
-            <Link
-              key={i}
-              href={item.link}
-              className={`flex items-center gap-3 p-3 rounded-lg transition ${
-                pathname === item.link
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-blue-100"
-              }`}
-            >
-              {item.icon}
-              {item.name}
-            </Link>
-          ))}
-        </div>
-
+      <aside className="w-56 shrink-0 border-r border-black/10 dark:border-white/10 p-4 space-y-1">
+        <p className="text-xs font-semibold uppercase tracking-widest text-black/30 dark:text-white/30 px-3 mb-3">
+          Admin
+        </p>
+        {menu.map((item, i) => (
+          <Link
+            key={i}
+            href={item.link}
+            className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition ${
+              pathname === item.link
+                ? "bg-black dark:bg-white text-white dark:text-black"
+                : "text-black/60 dark:text-white/60 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white"
+            }`}
+          >
+            {item.icon}
+            {item.name}
+          </Link>
+        ))}
       </aside>
 
-      {/* Right Side */}
-      <main className="flex-1 p-8">
+      {/* Main */}
+      <main className="flex-1 p-8 overflow-auto">
         {children}
       </main>
-
     </div>
   );
 }

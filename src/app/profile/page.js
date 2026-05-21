@@ -14,21 +14,27 @@ export default async function ProfilePage() {
   }
 
   return (
-    <section className="mx-auto max-w-2xl rounded-3xl border border-indigo-400/20 bg-white/85 p-8 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl dark:border-slate-700 dark:bg-slate-900/75">
-      <h1 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">Profile</h1>
-      <p className="mt-2 text-slate-600 dark:text-slate-300">Your authenticated account details.</p>
+    <section className="mx-auto max-w-2xl rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-black/20 p-8 shadow-sm">
+      <h1 className="text-3xl font-semibold tracking-tight text-black dark:text-white">Profile</h1>
+      <p className="mt-2 text-black/50 dark:text-white/50">Your authenticated account details.</p>
 
-      <div className="mt-8 grid gap-4">
-        <div>
-          <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Name</p>
-          <p className="mt-1 text-base font-medium text-slate-900 dark:text-slate-100">
+      <div className="mt-8 space-y-5">
+        <div className="rounded-xl border border-black/8 dark:border-white/8 bg-black/2 dark:bg-white/2 p-4">
+          <p className="text-xs uppercase tracking-widest text-black/30 dark:text-white/30 mb-1">Name</p>
+          <p className="text-base font-medium text-black dark:text-white">
             {session.user.name ?? "No name available"}
           </p>
         </div>
-        <div>
-          <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Email</p>
-          <p className="mt-1 text-base font-medium text-slate-900 dark:text-slate-100">
+        <div className="rounded-xl border border-black/8 dark:border-white/8 bg-black/2 dark:bg-white/2 p-4">
+          <p className="text-xs uppercase tracking-widest text-black/30 dark:text-white/30 mb-1">Email</p>
+          <p className="text-base font-medium text-black dark:text-white">
             {session.user.email ?? "No email available"}
+          </p>
+        </div>
+        <div className="rounded-xl border border-black/8 dark:border-white/8 bg-black/2 dark:bg-white/2 p-4">
+          <p className="text-xs uppercase tracking-widest text-black/30 dark:text-white/30 mb-1">Role</p>
+          <p className="text-base font-medium text-black dark:text-white capitalize">
+            {session.user.role ?? "user"}
           </p>
         </div>
       </div>

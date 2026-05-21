@@ -1,10 +1,12 @@
 export default function AuthCard({ title, subtitle, children, footer }) {
   return (
-    <div className="mx-auto w-full max-w-md rounded-3xl border border-indigo-400/20 bg-white/85 p-7 shadow-2xl shadow-indigo-500/10 backdrop-blur-xl dark:bg-slate-900/75">
-      <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">{title}</h1>
-      <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">{subtitle}</p>
+    <div className="mx-auto w-full max-w-md rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-black/20 p-7 shadow-lg">
+      <h1 className="text-2xl font-semibold tracking-tight text-black dark:text-white">{title}</h1>
+      <p className="mt-2 text-sm text-black/50 dark:text-white/50">{subtitle}</p>
       <div className="mt-6">{children}</div>
-      {footer ? <div className="mt-5 text-sm text-slate-600 dark:text-slate-300">{footer}</div> : null}
+      {footer ? (
+        <div className="mt-5 text-sm text-black/50 dark:text-white/50">{footer}</div>
+      ) : null}
     </div>
   );
 }

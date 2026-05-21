@@ -6,7 +6,10 @@ import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import bcrypt from "bcryptjs";
 import getMongoClient from "@/lib/mongodb";
 
-const adapter = process.env.MONGODB_URI ? MongoDBAdapter(getMongoClient()) : undefined;
+// NOTE: MongoDBAdapter is only used for OAuth providers.
+// For credentials + JWT strategy, we do NOT pass the adapter
+// because it conflicts with JWT sessions.
+const adapter = undefined;
 const oauthProviders = [];
 
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
@@ -77,6 +80,7 @@ export const authOptions = {
           name: user.name,
           email: user.email,
           image: user.image ?? null,
+          role: user.role ?? "user",
         };
       },
     }),
@@ -85,12 +89,14 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user && token.id) {
         session.user.id = token.id;
+        session.user.role = token.role;
       }
       return session;
     },

@@ -27,11 +27,12 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full bg-background text-foreground transition-colors duration-500">
+      <body className="min-h-full transition-colors duration-300" style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}>
         <AppProviders>
           <div className="flex min-h-screen flex-col">
             <Navbar/>
-            <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6 lg:px-8">{children}
+            <main className="mx-auto w-full max-w-7xl flex-1 px-4 pt-24 pb-10 sm:px-6 lg:px-8">
+              {children}
               <Toaster position="top-right" />
             </main>
             <Footer />

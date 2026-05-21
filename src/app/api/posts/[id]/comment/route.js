@@ -1,21 +1,38 @@
 import { NextResponse } from "next/server";
+import { ObjectId } from "mongodb";
 import getMongoClient from "@/lib/mongodb";
-import Post from "@/models/posts";
 
 export async function POST(req, { params }) {
-  const { text } = await req.json();
+  try {
+    const { text } = await req.json();
+    if (!text?.trim()) {
+      return NextResponse.json({ message: "Comment text is required" }, { status: 400 });
+    }
 
-  const client = await getMongoClient();
-  const db = client.db();
+    const client = await getMongoClient();
+    const db = client.db();
 
-  const post = await Post.findById(params.id);
+    const result = await db.collection("posts").findOneAndUpdate(
+      { _id: new ObjectId(params.id) },
+      {
+        $push: {
+          comments: {
+            _id: new ObjectId(),
+            text: text.trim(),
+            createdAt: new Date(),
+          },
+        },
+      },
+      { returnDocument: "after" }
+    );
 
-  post.comments.push({
-    text,
-    createdAt: new Date(),
-  });
+    if (!result) {
+      return NextResponse.json({ message: "Post not found" }, { status: 404 });
+    }
 
-  await post.save();
-
-  return NextResponse.json({ commentsCount: post.comments.length });
+    return NextResponse.json({ commentsCount: result.comments?.length ?? 0 });
+  } catch (error) {
+    console.error("Comment Error:", error);
+    return NextResponse.json({ message: "Failed to add comment" }, { status: 500 });
+  }
 }

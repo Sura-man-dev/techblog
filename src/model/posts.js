@@ -69,6 +69,14 @@ const PostSchema = new mongoose.Schema(
       ref: "User",
     },
 
+    // STATUS
+    status: {
+      type: String,
+      enum: ["Published", "Pending", "Rejected"],
+      default: "Pending",
+      index: true,
+    },
+
     // SOCIAL SYSTEM
     likes: {
       type: Number,

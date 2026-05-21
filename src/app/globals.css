@@ -1,10 +1,11 @@
 @import "tailwindcss";
 
+/* ─── CSS VARIABLES ─────────────────────────────────────── */
 :root {
   --background: #ffffff;
-  --foreground: #111111;
-  --surface: #ffffff;
-  --surface-border: rgba(15, 23, 42, 0.12);
+  --foreground: #0a0a0a;
+  --surface: #f4f4f4;
+  --surface-border: rgba(0, 0, 0, 0.09);
 }
 
 @theme inline {
@@ -14,80 +15,90 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Light mode */
 .light {
   --background: #ffffff;
-  --foreground: #111111;
-  --surface: #ffffff;
-  --surface-border: rgba(15, 23, 42, 0.12);
+  --foreground: #0a0a0a;
+  --surface: #f4f4f4;
+  --surface-border: rgba(0, 0, 0, 0.09);
 }
 
+/* Dark mode — pure black */
 .dark {
   --background: #000000;
-  --foreground: #ffffff;
-  --surface: #0b0b0b;
-  --surface-border: rgba(255, 255, 255, 0.18);
+  --foreground: #f5f5f5;
+  --surface: #111111;
+  --surface-border: rgba(255, 255, 255, 0.09);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  transition: background-color 500ms ease, color 500ms ease, background 700ms ease;
-}
-
-* {
-  border-color: rgb(226 232 240);
-}
-
+/* ─── BASE ───────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
 }
 
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+/* Default border color follows theme */
+* {
+  border-color: var(--surface-border);
+}
+
+/* ─── GLASS SURFACE ──────────────────────────────────────── */
+.glass-surface {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+}
+
+/* ─── HERO SWIPER ────────────────────────────────────────── */
 .hero-swiper .swiper-button-next,
 .hero-swiper .swiper-button-prev {
-  height: 44px;
-  width: 44px;
-  border: 1px solid rgb(255 255 255 / 0.32);
+  height: 40px;
+  width: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 9999px;
-  background: rgb(15 23 42 / 0.55);
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(6px);
-  transition: all 250ms ease;
+  transition: all 200ms ease;
 }
 
 .hero-swiper .swiper-button-next:hover,
 .hero-swiper .swiper-button-prev:hover {
-  border-color: rgb(129 140 248 / 0.8);
-  background: rgb(99 102 241 / 0.35);
-  transform: translateY(-2px);
+  background: rgba(0, 0, 0, 0.75);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .hero-swiper .swiper-button-next::after,
 .hero-swiper .swiper-button-prev::after {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: white;
 }
 
 .hero-swiper .swiper-pagination {
-  bottom: 22px !important;
+  bottom: 20px !important;
 }
 
 .hero-swiper .swiper-pagination-bullet {
-  width: 28px;
-  height: 7px;
+  width: 24px;
+  height: 6px;
   border-radius: 9999px;
-  background: rgb(255 255 255 / 0.45);
+  background: rgba(255, 255, 255, 0.4);
   opacity: 1;
-  transition: all 250ms ease;
+  transition: all 200ms ease;
 }
 
 .hero-swiper .swiper-pagination-bullet-active {
-  width: 40px;
-  background: rgb(129 140 248);
+  width: 36px;
+  background: #ffffff;
 }
 
 .hero-swiper .hero-slide-image {
-  transform: scale(1.07);
+  transform: scale(1.06);
 }
 
 .hero-swiper .swiper-slide-active .hero-slide-image {
@@ -96,8 +107,8 @@ html {
 
 .hero-swiper .hero-slide-content {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 700ms ease, transform 700ms ease;
+  transform: translateY(14px);
+  transition: opacity 600ms ease, transform 600ms ease;
 }
 
 .hero-swiper .swiper-slide-active .hero-slide-content {
@@ -105,30 +116,12 @@ html {
   transform: translateY(0);
 }
 
-.glass-surface {
-  background: var(--surface);
-  border: 1px solid var(--surface-border);
-  backdrop-filter: blur(16px);
-}
-
+/* ─── FLOAT ANIMATIONS ───────────────────────────────────── */
 @keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
 }
 
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float 10s ease-in-out 1.2s infinite;
-}
-
-.animate-float-slow {
-  animation: float 12s ease-in-out 2s infinite;
-}
+.animate-float        { animation: float 8s ease-in-out infinite; }
+.animate-float-delayed { animation: float 10s ease-in-out 1.2s infinite; }
+.animate-float-slow   { animation: float 12s ease-in-out 2s infinite; }

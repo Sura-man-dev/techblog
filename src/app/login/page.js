@@ -16,10 +16,7 @@ function ProviderIcon({ id }) {
   if (id === "google") {
     return (
       <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
-        <path
-          fill="#EA4335"
-          d="M12 10.2v3.9h5.4c-.2 1.3-1.6 3.9-5.4 3.9-3.2 0-5.9-2.7-5.9-6s2.7-6 5.9-6c1.8 0 3 .8 3.7 1.4l2.5-2.4C16.6 3.5 14.5 2.7 12 2.7 6.9 2.7 2.7 6.9 2.7 12S6.9 21.3 12 21.3c6.9 0 9.1-4.8 9.1-7.2 0-.5 0-.8-.1-1.1H12z"
-        />
+        <path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.3-1.6 3.9-5.4 3.9-3.2 0-5.9-2.7-5.9-6s2.7-6 5.9-6c1.8 0 3 .8 3.7 1.4l2.5-2.4C16.6 3.5 14.5 2.7 12 2.7 6.9 2.7 2.7 6.9 2.7 12S6.9 21.3 12 21.3c6.9 0 9.1-4.8 9.1-7.2 0-.5 0-.8-.1-1.1H12z" />
       </svg>
     );
   }
@@ -37,6 +34,9 @@ function ProviderIcon({ id }) {
   );
 }
 
+const inputClass =
+  "w-full rounded-xl border border-black/15 dark:border-white/15 bg-white dark:bg-black/30 px-4 py-3 text-sm text-black dark:text-white outline-none transition placeholder:text-black/30 dark:placeholder:text-white/30 focus:border-black/40 dark:focus:border-white/40";
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -48,10 +48,9 @@ export default function LoginPage() {
   useEffect(() => {
     async function loadProviders() {
       const providers = await getProviders();
-      const filtered = Object.values(providers ?? {}).filter((provider) => provider.id !== "credentials");
-      setAvailableProviderIds(filtered.map((provider) => provider.id));
+      const filtered = Object.values(providers ?? {}).filter((p) => p.id !== "credentials");
+      setAvailableProviderIds(filtered.map((p) => p.id));
     }
-
     loadProviders();
   }, []);
 
@@ -59,22 +58,15 @@ export default function LoginPage() {
     event.preventDefault();
     setLoading(true);
     setError("");
-
     try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-
+      const result = await signIn("credentials", { email, password, redirect: false });
       if (result?.error) {
         setError("Invalid email or password.");
         return;
       }
-
       router.push("/");
       router.refresh();
-    } catch (_error) {
+    } catch {
       setError("Login failed. Please try again.");
     } finally {
       setLoading(false);
@@ -98,7 +90,7 @@ export default function LoginPage() {
         footer={
           <>
             New here?{" "}
-            <Link href="/register" className="font-semibold text-indigo-500 hover:text-indigo-400">
+            <Link href="/register" className="font-semibold text-black dark:text-white hover:underline">
               Create an account
             </Link>
           </>
@@ -106,53 +98,30 @@ export default function LoginPage() {
       >
         <form className="space-y-4" onSubmit={handleCredentialsLogin}>
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-sm font-medium text-slate-700 dark:text-slate-200">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              required
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@example.com"
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none ring-indigo-500 transition focus:ring-2 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-            />
+            <label htmlFor="email" className="text-sm font-medium text-black/70 dark:text-white/70">Email</label>
+            <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className={inputClass} />
           </div>
-
           <div className="space-y-1.5">
-            <label htmlFor="password" className="text-sm font-medium text-slate-700 dark:text-slate-200">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              required
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="••••••••"
-              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none ring-indigo-500 transition focus:ring-2 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-            />
+            <label htmlFor="password" className="text-sm font-medium text-black/70 dark:text-white/70">Password</label>
+            <input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={inputClass} />
           </div>
-
           <div className="pt-1 text-right">
-            <Link href="#" className="text-sm font-medium text-indigo-500 hover:text-indigo-400">
+            <Link href="#" className="text-sm font-medium text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white transition">
               Forgot password?
             </Link>
           </div>
-
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-indigo-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500"
+            className="w-full rounded-xl bg-black dark:bg-white px-4 py-3 text-sm font-semibold text-white dark:text-black transition hover:bg-black/80 dark:hover:bg-white/80 disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Login"}
           </button>
         </form>
 
-        {error ? <p className="mt-3 text-sm text-red-500">{error}</p> : null}
+        {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
 
-        <div className="my-5 h-px bg-slate-200 dark:bg-slate-700" />
+        <div className="my-5 h-px bg-black/10 dark:bg-white/10" />
 
         <div className="space-y-2">
           {socialProviders.map((provider) => (
@@ -160,10 +129,10 @@ export default function LoginPage() {
               key={provider.id}
               type="button"
               onClick={() => handleSocialLogin(provider.id)}
-              className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+              className="flex w-full items-center justify-center gap-3 rounded-xl border border-black/15 dark:border-white/15 bg-white dark:bg-black/20 px-4 py-3 text-sm font-semibold text-black dark:text-white transition hover:bg-black/5 dark:hover:bg-white/5"
             >
               <ProviderIcon id={provider.id} />
-              {`Continue with ${provider.name}`}
+              Continue with {provider.name}
             </button>
           ))}
         </div>

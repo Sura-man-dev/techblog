@@ -36,7 +36,7 @@ export const heroSlides = [
       "Dive into curated deep dives that blend technical execution with practical product strategy.",
     ctaLabel: "Explore Insights",
     ctaHref: "/news",
-    image: "/images/hero-02.svg",
+    image: "/images/hero6.jpg",
   },
   {
     id: 3,
@@ -54,7 +54,7 @@ export const heroSlides = [
       "Track the most important releases, platform updates, and emerging patterns in one place.",
     ctaLabel: "View Latest News",
     ctaHref: "/news",
-    image: "/images/hero-04.svg",
+    image: "/images/hero9.jpg",
   },
 ];
 
